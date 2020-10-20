@@ -18,6 +18,11 @@ const fs = require('fs');
 // readStream.pipe(csv({downstreamFormat: 'array'})).pipe(writeStream);
 
 // convert REVIEWS csv to json
-let readStream = fs.createReadStream('../../related-products-data/old-database-csvs/reviews.csv');
-let writeStream = fs.createWriteStream('../../related-products-data/unformatted-json/unformatted-reviews.json');
+// let readStream = fs.createReadStream('../../related-products-data/old-database-csvs/reviews.csv');
+// let writeStream = fs.createWriteStream('../../related-products-data/unformatted-json/unformatted-reviews.json');
+// readStream.pipe(csv({downstreamFormat: 'array'})).pipe(writeStream);
+
+// convert FEATURES csv to json
+let readStream = fs.createReadStream('../../related-products-data/old-database-csvs/features.csv');
+let writeStream = fs.createWriteStream('../../related-products-data/unformatted-json/unformatted-features.json');
 readStream.pipe(csv({downstreamFormat: 'array'})).pipe(writeStream);
