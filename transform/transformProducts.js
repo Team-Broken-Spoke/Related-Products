@@ -1,34 +1,30 @@
 const fs = require('fs');
 const readline = require('readline');
 
-let readStream = fs.createReadStream('../../related-products-data/unformatted-json/unformatted-reviews.json');
-let writeStream = fs.createWriteStream('../../related-products-data/formatted-json/formatted-reviews.json');
 
-const reviewDetails = (review) => {
-  return {
-    "review_id": review.id,
-    "rating": review.rating,
-  }
-}
+let readStream = fs.createReadStream('../../related-products-data/unformatted-json/unformatted-products.json');
+let writeStream = fs.createWriteStream('../../related-products-data/formatted-json/formatted-products.json');
 
 let currentId = "1";
-let reviewObj= {
-  "product_id" : "1",
-  "results": []
-}
+let productObj = {
+  "productId": '1',
+  "name": '',
+  "category": '',
+  "default_price": ''
+};
 
 const processRecord = (data) => {
-  if(data.product_id === currentId) {
-    reviewObj["results"].push(reviewDetails(data));
+  if(data.id === currentId) {
+    productObj["productId"] = data.id;
+    productObj["name"] = data.name;
+    productObj["category"] = data.category;
+    productObj["default_price"] = data.default_price;
   } else {
-    writeStream.write(JSON.stringify(reviewObj));
-    reviewObj = { "product_id": data.product_id, "results": [] };
-    currentId = data.product_id;
-    reviewObj["results"].push(reviewDetails(data));
+    writeStream.write(JSON.stringify(productObj));
+    productObj = {"productId": data.id, "name": data.name, "category": data.category, "default_price": data.default_price};
   }
-}
+};
 
-// read data line-by-line
 const readInterface = readline.createInterface({
   input: readStream
 });
@@ -44,5 +40,3 @@ readInterface.on('line', (line) => {
       processRecord(JSON.parse(line));
   }
 });
-
-
