@@ -1,0 +1,26 @@
+{
+  "name": "related-products",
+  "version": "1.0.0",
+  "description": "Backend API refactor for the Related Products frontend component of HRATX51 Frontend Capstone site.",
+  "main": "index.js",
+  "dependencies": {
+    "csvtojson": "^2.0.10",
+    "express": "^4.17.1",
+    "mongodb": "^3.6.2",
+    "mongoose": "^5.10.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Team-Broken-Spoke/Related-Products.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Team-Broken-Spoke/Related-Products/issues"
+  },
+  "homepage": "https://github.com/Team-Broken-Spoke/Related-Products#readme"
+}
