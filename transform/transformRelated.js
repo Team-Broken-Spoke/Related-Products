@@ -5,25 +5,23 @@ let readStream = fs.createReadStream('../../related-products-data/unformatted-js
 let writeStream = fs.createWriteStream('../../related-products-data/formatted-json/formatted-related.json');
 
 const relatedDetails = (related) => {
-  return {
-    "productId": related.related_product_id
-  }
+  return related.related_product_id;
 }
 
 let currentId = "1";
 let reviewObj= {
   "productId" : "1",
-  "related": []
+  "relatedProductIds": []
 }
 
 const processRecord = (data) => {
   if(data.current_product_id === currentId) {
-    reviewObj["related"].push(relatedDetails(data));
+    reviewObj["relatedProductIds"].push(relatedDetails(data));
   } else {
     writeStream.write(JSON.stringify(reviewObj));
-    reviewObj = { "productId": data.current_product_id, "related": [] };
+    reviewObj = { "productId": data.current_product_id, "relatedProductIds": [] };
     currentId = data.current_product_id;
-    reviewObj["related"].push(relatedDetails(data));
+    reviewObj["relatedProductIds"].push(relatedDetails(data));
   }
 }
 
