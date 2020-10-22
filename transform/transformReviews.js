@@ -5,26 +5,23 @@ let readStream = fs.createReadStream('../../related-products-data/unformatted-js
 let writeStream = fs.createWriteStream('../../related-products-data/formatted-json/formatted-reviews.json');
 
 const reviewDetails = (review) => {
-  return {
-    "reviewId": review.id,
-    "rating": review.rating,
-  }
+  return review.rating;
 }
 
 let currentId = "1";
 let reviewObj= {
   "productId" : "1",
-  "results": []
+  "reviews": []
 }
 
 const processRecord = (data) => {
   if(data.product_id === currentId) {
-    reviewObj["results"].push(reviewDetails(data));
+    reviewObj["reviews"].push(reviewDetails(data));
   } else {
     writeStream.write(JSON.stringify(reviewObj));
-    reviewObj = { "productId": data.product_id, "results": [] };
+    reviewObj = { "productId": data.product_id, "reviews": [] };
     currentId = data.product_id;
-    reviewObj["results"].push(reviewDetails(data));
+    reviewObj["reviews"].push(reviewDetails(data));
   }
 }
 

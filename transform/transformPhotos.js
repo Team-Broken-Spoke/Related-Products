@@ -5,21 +5,26 @@ const readline = require('readline');
 let readStream = fs.createReadStream('../../related-products-data/unformatted-json/unformatted-photos.json');
 let writeStream = fs.createWriteStream('../../related-products-data/formatted-json/formatted-photos.json');
 
+const photoDetails = (photo) => {
+  return photo.url;
+}
+
 let currentId = "1";
 let photosObj = {
   "productId": '1',
-  "url": ''
+  "photos": []
 };
 
 const processRecord = (data) => {
   if(data.styleId === currentId) {
-    photosObj["productId"] = data.styleId
-    photosObj["url"] = data.url;
+    photosObj["photos"].push(photoDetails(data));
   } else {
     writeStream.write(JSON.stringify(photosObj));
-    photosObj = {"productId": data.styleId, "url": data.url};
+    photosObj = { "productId": data.styleId, "photos": [] };
+    currentId = data.styleId;
+    photosObj["photos"].push(photoDetails(data));
   }
-};
+}
 
 const readInterface = readline.createInterface({
   input: readStream
