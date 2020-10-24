@@ -1,22 +1,23 @@
 const express = require('express');
 const app = express();
-app.use(express.json());
+const port = 1337;
 const { MongoClient } = require('mongodb');
 const url = "mongodb://localhost:27017";
-const port = 1337;
+
+app.use(express.json());
+
 let db;
-
-
-MongoClient.connect(url, { useUnifiedTopology: true })
-  .then((client) => {
-    db = client.db("related-products");
+MongoClient
+  .connect(url, { useUnifiedTopology: true })
+  .then(client => {
+    db = client.db('related-products');
   })
-  .catch((error) => console.error(error));
+  .catch(error => console.error(error));
 
-
-  app.get('/reviews/:productId', (req, res) => {
-    const collection = db.collection('all-reviews');
-    collection.findOne({product_id: req.params.productId})
+  //FEATURES
+  app.get('/features/:productId', (req, res) => {
+    const collection = db.collection('features');
+    collection.findOne({productId: req.params.productId})
       .then((response) => {
         res.send(response)
       })
@@ -25,30 +26,54 @@ MongoClient.connect(url, { useUnifiedTopology: true })
       })
   });
 
-  app.post('/reviews/:productId', (req, res) => {
-    const collection = db.collection('tester');
-    collection.updateOne (
-      { product_id: req.params.productId },
-      {
-        $push: {
-          results: {
-            rating: req.body.rating,
-            summary: req.body.summary,
-            recommend: req.body.recommend,
-            response: "",
-            body: req.body.body,
-            date: new Date().toISOString().substr(0, 10),
-            reviewer_name: req.body.reviewer_name,
-            helpfulness: "0"
-          }
-        }
-      })
-      .then(() => {
-        res.send('success!')
+  //PHOTOS
+  app.get('/photos/:productId', (req, res) => {
+    const collection = db.collection('photos');
+    collection.findOne({productId: req.params.productId})
+      .then((response) => {
+        res.send(response)
       })
       .catch(error => {
-        console.error(error)
+        console.error(error);
       })
-  })
+  });
 
-  app.listen(port, () => console.info(`REST API running on port ${port}`));
+  //PRODUCT DETAILS
+  app.get('/productDetails/:productId', (req, res) => {
+    const collection = db.collection('products');
+    collection.findOne({productId: req.params.productId})
+      .then((response) => {
+        res.send(response)
+      })
+      .catch(error => {
+        console.error(error);
+      })
+  });
+
+  //RELATED
+  app.get('/related/:styleId', (req, res) => {
+    const collection = db.collection('related');
+    collection.findOne({productId: req.params.productId})
+      .then((response) => {
+        res.send(response)
+      })
+      .catch(error => {
+        console.error(error);
+      })
+  });
+
+  //REVIEWS
+  app.get('/reviews/:productId', (req, res) => {
+    const collection = db.collection('reviews');
+    collection.findOne({productId: req.params.productId})
+      .then((response) => {
+        res.send(response)
+      })
+      .catch(error => {
+        console.error(error);
+      })
+  });
+
+  app.listen(port, () => {
+    console.log(`Listening at http://localhost:${port}`)
+  });

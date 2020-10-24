@@ -46,15 +46,16 @@ db.products.aggregate([
   //         $and:[{"userName" : "admin"}]
   //     }
   // },
-
   // define which fields are you want to fetch
   {
       $project:{
           productId : 1,
           features : "$_features.features",
           photos : "$_photos.photos[0]",
-          related : "$_related.related",
-          reviews : "$_reviews.results",
+          related : "$_related.relatedProductIds",
+          reviews : "$_reviews.reviews"
       }
-  }
+  },
+
+  { $out: "relatedProducts" }
 ]);
